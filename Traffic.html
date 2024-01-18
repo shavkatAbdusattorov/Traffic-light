@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>REd Light</title>
+    <style>
+        #outer{
+            width: 600px;
+            height: 600px;
+            padding: 50px;
+            border: 5px solid black;
+        }
+        #inner{
+            width: 200px;
+            height: 400px;
+            background-color: black;
+            margin: auto;
+            border-radius: 40px;
+            padding: 20px;
+        }
+
+        #pole{
+            width: 50px;
+            height: 200px;
+            background: black;
+            margin: auto;
+        }
+
+
+        .light{
+            border-radius: 100%;
+            width: 70px;
+            height: 70px;
+            background: white;
+            margin: auto;
+            margin-top: 30px;
+        }
+
+
+
+
+
+        .red-off{
+            background: gray;
+        } 
+
+
+        .green-off{
+            background: gray;
+        }
+
+        .yellow-off{
+            background: gray;
+        }
+
+
+
+
+        .red-on{
+            background: rgba(255,0,1);
+            box-shadow: 0 0 2px 2px rgba(255,0,0,1),0 0 10px 10px rgba(255,0,0,1), 0 0 5px 5px rgba(255,0,0,1);
+        } 
+
+
+        .green-on{
+                      background: rgba(0,255,1);
+            box-shadow: 0 0 2px 2px rgba(0,255,0,1),0 0 10px 10px rgba(0,255,0,1), 0 0 5px 5px rgba(0,255,0,1);
+        }
+
+        .yellow-on{
+                       background: rgba(255,255,1);
+            box-shadow: 0 0 2px 2px rgba(255,255,0,1),0 0 10px 10px rgba(255,255,0,1), 0 0 5px 5px rgba(255,255,0,1);
+        }
+
+        #time{
+            width: 150px;
+            margin: auto;
+            font-size: 70px;
+            color: orange;
+            margin-top: 20px;
+            font-family: d7;
+        }
+
+
+        @font-face{
+            font-family: d7;
+            src: url(digital-7.ttf);
+        }
+    </style>
+</head>
+<body>
+    <div id="outer">
+        <div id="inner">
+            <div class="light red-on" id="red"></div>
+            <div class="light yellow-off" id="yellow"></div>
+            <div class="light green-off" id="green"></div>
+            <div id="time">00:00</div>
+        </div>
+        <div id="pole"></div>
+    </div>
+</body>
+
+
+<script>
+    TS = [10,3,20];
+    TS_COPY = TS.slice()
+    Light = 0;
+    var red = document.getElementById("red");
+    var yellow = document.getElementById("yellow");
+    var green = document.getElementById("green");
+
+
+
+    function setTime(){
+        document.getElementById("time").innerHTML = convertTime(TS_COPY[Light]);
+        TS_COPY[Light]--;
+        if(TS_COPY[Light]<0){
+            if(Light == 0){
+                Light=1;
+                LightOff()
+                yellow.classList.replace("yellow-off", "yellow-on")
+            }
+            else if(Light==1){
+                Light = 2
+                LightOff()
+                green.classList.replace("green-off", "green-on")
+            }else if(Light==2){
+                Light = 0;
+                LightOff()
+                red.classList.replace("red-off", "red-on")
+
+                TS_COPY = TS.slice();
+            }
+        }
+    }
+
+
+    function LightOff(){
+        yellow.classList.replace("yellow-on", "yellow-off")
+        green.classList.replace("green-on", "green-off")
+        red.classList.replace("red-on", "red-off")
+    }
+
+
+    function convertTime(TS){
+        m= parseInt(TS/60);
+        s=TS%60;
+        mt=m<10?"0"+m:m;
+        st=s<10?"0"+s:s;
+        return mt+":"+st
+    }
+
+    setInterval(setTime,1000)
+
+</script>
+</html>
